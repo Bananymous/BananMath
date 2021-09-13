@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstdint>
 
+#include "random.h"
+
 namespace Banan
 {
 
@@ -89,6 +91,7 @@ namespace Banan
 		{
 			return *this /= mag();
 		}
+
 	};
 
 	/* #################### 3d Vector Definiton #################### */
@@ -175,6 +178,8 @@ namespace Banan
 		}
 		vec<Ty, 3>& normalize()
 		{
+			if (magSq() == 0.0)
+				return *this;
 			return *this /= mag();
 		}
 
@@ -182,11 +187,23 @@ namespace Banan
 		vec<Ty, 3> cross(const vec<Ty, 3>& v)
 		{
 			return vec<Ty, 3>(
-					y * v.z - z * v.y,
-					z * v.x - x * v.z,
-					x * v.y - y * v.x
-				);
+				y * v.z - z * v.y,
+				z * v.x - x * v.z,
+				x * v.y - y * v.x
+			);
 		}
+
+		// Random vectors
+		static vec<Ty, 3> random()
+		{
+			vec<Ty, 3> vec(
+				get_random_normal<Ty>(Ty(0), Ty(1)),
+				get_random_normal<Ty>(Ty(0), Ty(1)),
+				get_random_normal<Ty>(Ty(0), Ty(1))
+			);
+			return vec.normalize();
+		}
+
 	};
 
 	/* #################### 4d Vector Definiton #################### */
@@ -374,9 +391,8 @@ namespace Banan
 	template<typename Ty, uint32_t Size>
 	vec<Ty, Size> normal(const vec<Ty, Size>& v)
 	{
-		if (v.magSq() == 0.0)
-			return v;
-		return v / v.mag();
+		vec<Ty, Size> copy = v;
+		return copy.normalize();
 	}
 
 	// Addition/Subtraction of vectors
