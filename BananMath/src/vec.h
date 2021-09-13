@@ -92,6 +92,30 @@ namespace Banan
 			return *this /= mag();
 		}
 
+		// Random vectors
+		static vec<Ty, 2> random(Ty min, Ty max)
+		{
+			return vec<Ty, 2>(
+				get_random_uniform<Ty>(min, max),
+				get_random_uniform<Ty>(min, max)
+			);
+		}
+		static vec<Ty, 2> random()
+		{
+			vec<Ty, 2> res(
+				get_random_normal<Ty>(Ty(0), Ty(1)),
+				get_random_normal<Ty>(Ty(0), Ty(1))
+			);
+			return res.normalize();
+		}
+		static vec<Ty, 2> random_in_unit_disc()
+		{
+			vec<Ty, 2> res = random(Ty(-1), Ty(1));
+			while(res.magSq() > 1.0)
+				res = random(Ty(-1), Ty(1));
+			return res;
+		}
+
 	};
 
 	/* #################### 3d Vector Definiton #################### */
@@ -184,7 +208,7 @@ namespace Banan
 		}
 
 		// Cross product
-		vec<Ty, 3> cross(const vec<Ty, 3>& v)
+		vec<Ty, 3> cross(const vec<Ty, 3>& v) const
 		{
 			return vec<Ty, 3>(
 				y * v.z - z * v.y,
@@ -194,6 +218,14 @@ namespace Banan
 		}
 
 		// Random vectors
+		static vec<Ty, 3> random(Ty min, Ty max)
+		{
+			return vec<Ty, 3>(
+				get_random_uniform<Ty>(min, max),
+				get_random_uniform<Ty>(min, max),
+				get_random_uniform<Ty>(min, max)
+			);
+		}
 		static vec<Ty, 3> random()
 		{
 			vec<Ty, 3> vec(
@@ -202,6 +234,13 @@ namespace Banan
 				get_random_normal<Ty>(Ty(0), Ty(1))
 			);
 			return vec.normalize();
+		}
+		static vec<Ty, 3> random_in_unit_sphere()
+		{
+			vec<Ty, 3> res = vec<Ty, 3>::random(Ty(-1), Ty(1));
+			while (res.magSq() > 1.0)
+				res = vec<Ty, 3>::random(Ty(-1), Ty(1));
+			return res;
 		}
 
 	};
@@ -298,6 +337,27 @@ namespace Banan
 			return *this /= mag();
 		}
 
+		// Random vectors
+		static vec<Ty, 4> random(Ty min, Ty max)
+		{
+			return vec<Ty, 4>(
+				get_random_uniform<Ty>(min, max),
+				get_random_uniform<Ty>(min, max),
+				get_random_uniform<Ty>(min, max),
+				get_random_uniform<Ty>(min, max)
+			);
+		}
+		static vec<Ty, 4> random()
+		{
+			vec<Ty, 4> res(
+				get_random_normal<Ty>(Ty(0), Ty(1)),
+				get_random_normal<Ty>(Ty(0), Ty(1)),
+				get_random_normal<Ty>(Ty(0), Ty(1)),
+				get_random_normal<Ty>(Ty(0), Ty(1))
+			);
+			return res.normalize();
+		}
+
 	};
 
 
@@ -382,17 +442,58 @@ namespace Banan
 			return *this /= mag();
 		}
 
+		// Random vectors
+		static vec<Ty, Size> random(Ty min, Ty max)
+		{
+			vec<Ty, Size> res;
+			for (int i = 0; i < Size; i++)
+				res[i] = get_random_uniform<Ty>(min, max);
+			return res;
+		}
+		static vec<Ty, Size> random()
+		{
+			vec<Ty, Size> res;
+			for (int i = 0; i < Size; i++)
+				res[i] = get_random_normal<Ty>(Ty(0), Ty(1));
+			return res.normalize();
+		}
+
 	};
 
 
 	/* ############# For All vectors ########### */
 
-	// Normal vector
+
 	template<typename Ty, uint32_t Size>
-	vec<Ty, Size> normal(const vec<Ty, Size>& v)
+	vec<Ty, Size> mult(const vec<Ty, Size>& a, const vec<Ty, Size>& b)
+	{
+		vec<Ty, Size> result = a;
+		for (int i = 0; i < Size; i++)
+			result.values[i] *= b.values[i];
+		return result;
+	}
+
+	// Unit vector
+	template<typename Ty, uint32_t Size>
+	vec<Ty, Size> unit(const vec<Ty, Size>& v)
 	{
 		vec<Ty, Size> copy = v;
 		return copy.normalize();
+	}
+
+	// Reflect vector
+	template<typename Ty, uint32_t Size>
+	vec<Ty, Size> reflect(const vec<Ty, Size>& v, const vec<Ty, Size>& n)
+	{
+		return v - Ty(2) * (v * n) * n;
+	}
+	template<typename Ty, uint32_t Size>
+	vec<Ty, Size> refract(const vec<Ty, Size>& v, const vec<Ty, Size>& n, Ty refraction_ratio)
+	{
+		Ty cos_theta = std::min(-v * n, Ty(1));
+		vec<Ty, Size> r_out_prep = refraction_ratio * (v + cos_theta * n);
+		vec<Ty, Size> r_out_paral = -std::sqrt(std::abs(Ty(1) - r_out_prep.magSq())) * n;
+		return r_out_prep + r_out_paral;
 	}
 
 	// Addition/Subtraction of vectors
@@ -435,9 +536,6 @@ namespace Banan
 	{
 		return a.dot(b);
 	}
-	
-
-
 
 
 

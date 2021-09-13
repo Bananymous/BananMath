@@ -8,14 +8,14 @@ namespace Banan
 	static std::mt19937 s_gen;
 
 	template<typename T>
-	typename std::enable_if<std::is_integral<T>::value, T>::type get_random_uniform(T min, T max)
+	typename std::enable_if<std::is_integral<T>::value, T>::type get_random_uniform(T min = T(0), T max = T(1))
 	{
 		std::uniform_int_distribution dist(min, max);
 		return dist(s_gen);
 	}
 
 	template<typename T>
-	typename std::enable_if<std::is_floating_point<T>::value, T>::type get_random_uniform(T min, T max)
+	typename std::enable_if<std::is_floating_point<T>::value, T>::type get_random_uniform(T min = T(0), T max = T(1))
 	{
 		std::uniform_real_distribution dist(min, max);
 		return dist(s_gen);
