@@ -1,8 +1,8 @@
 #pragma once
 
 #include "pcg/pcg_random.hpp"
+#include "cxx/ziggurat.hpp"
 
-#include <random>
 #include <type_traits>
 
 namespace Banan
@@ -31,7 +31,7 @@ namespace Banan
 	template<typename T>
 	typename std::enable_if<std::is_floating_point<T>::value, T>::type get_random_normal(T mean, T std)
 	{
-		std::normal_distribution<T> dist(mean, std);
+		cxx::ziggurat_normal_distribution dist(mean, std);
 		return dist(s_pcg32_fast);
 	}
 

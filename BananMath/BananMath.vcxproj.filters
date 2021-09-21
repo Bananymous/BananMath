@@ -30,6 +30,9 @@
     <ClInclude Include="src\pcg\pcg_uint128.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\cxx\ziggurat.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\build.cpp">
