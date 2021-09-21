@@ -84,6 +84,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\pcg\pcg_extras.hpp" />
+    <ClInclude Include="src\pcg\pcg_random.hpp" />
+    <ClInclude Include="src\pcg\pcg_uint128.hpp" />
     <ClInclude Include="src\random.h" />
     <ClInclude Include="src\vec.h" />
   </ItemGroup>

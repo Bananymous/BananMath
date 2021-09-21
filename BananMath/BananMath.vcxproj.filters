@@ -21,6 +21,15 @@
     <ClInclude Include="src\random.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="src\pcg\pcg_extras.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pcg\pcg_random.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\pcg\pcg_uint128.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\build.cpp">

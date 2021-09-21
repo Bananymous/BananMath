@@ -461,17 +461,7 @@ namespace Banan
 	};
 
 
-	/* ############# For All vectors ########### */
-
-
-	template<typename Ty, uint32_t Size>
-	vec<Ty, Size> mult(const vec<Ty, Size>& a, const vec<Ty, Size>& b)
-	{
-		vec<Ty, Size> result = a;
-		for (int i = 0; i < Size; i++)
-			result.values[i] *= b.values[i];
-		return result;
-	}
+	/* ##################### For All vectors ####################### */
 
 	// Unit vector
 	template<typename Ty, uint32_t Size>
@@ -481,7 +471,7 @@ namespace Banan
 		return copy.normalize();
 	}
 
-	// Reflect vector
+	// Reflect/Refract vector
 	template<typename Ty, uint32_t Size>
 	vec<Ty, Size> reflect(const vec<Ty, Size>& v, const vec<Ty, Size>& n)
 	{
@@ -530,11 +520,31 @@ namespace Banan
 		return copy /= val;
 	}
 
-	// Multiplying vector with vector (dot)
+	// Multiplying vector with vector (dot and cross (3d))
 	template<typename Ty, uint32_t Size>
 	Ty operator*(const vec<Ty, Size>& a, const vec<Ty, Size>& b)
 	{
 		return a.dot(b);
+	}
+	template<typename Ty, uint32_t Size>
+	Ty dot(const vec<Ty, Size>& a, const vec<Ty, Size>& b)
+	{
+		return a.dot(b);
+	}
+	template<typename Ty>
+	vec<Ty, 3> cross(const vec<Ty, 3>& a, const vec<Ty, 3>& b)
+	{
+		return a.cross(b);
+	}
+
+	// Multiply elements together
+	template<typename Ty, uint32_t Size>
+	vec<Ty, Size> elem_mult(const vec<Ty, Size>& a, const vec<Ty, Size>& b)
+	{
+		vec<Ty, Size> result = a;
+		for (int i = 0; i < Size; i++)
+			result.values[i] *= b.values[i];
+		return result;
 	}
 
 
